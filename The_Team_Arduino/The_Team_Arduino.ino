@@ -39,22 +39,37 @@ void loop()
   else if (sound_lv > 150 && sound_lv <= 250)
   {
     lcd.setRGB( 100, 100, 0 );
-    lcd.print("Current noise lv: quiet");
+    lcd.print("Current noise lv: noisy");
+  }
+  else if (sound_lv > 250)
+  {
+    lcd.setRGB( 100, 0, 0 );
+    lcd.print("Current noise lv: loud AF");
   }
 
 }
 
 int listen()
 {
-
-  int soundValue = 0; //create variable to store many different readings
-  for (int i = 0; i < 32; i++) //create a for loop to read 
-  { soundValue += analogRead(sound_sensor);  } //read the sound sensor
- 
-  soundValue >>= 5; //bitshift operation 
-  //Serial.println(soundValue); //print the value of sound sensor
-
-
+  int *arr = new int(20);
+  for (int i = 0; i < 20; i++)
+  {
+    int soundValue = 0; //create variable to store many different readings
+    for (int x = 0; x < 500; i++) //create a for loop to read every half second for 10 seconds
+    { soundValue += analogRead(sound_sensor);  } //read the sound sensor
+  
+    soundValue >>= 5; //bitshift operation 
+    soundValue >> arr[i];
+    //Serial.println(soundValue); //print the value of sound sensor
+  }
+  //gets average
+  int sum = 0;
+  for (i = 0; i < arr.length; i++)
+  {
+    sum = sum + arr[i]
+  }
+  int average = sum / arr.length
+  return average;
 }
 
 
