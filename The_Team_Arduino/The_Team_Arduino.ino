@@ -55,7 +55,7 @@ int listen()
   for (int i = 0; i < 20; i++)
   {
     int soundValue = 0; //create variable to store many different readings
-    for (int x = 0; x < 500; i++) //create a for loop to read every half second for 10 seconds
+    for (int x = 0; x < 500; i++) //create a for loop to read every half second
     { soundValue += analogRead(sound_sensor);  } //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
