@@ -5,7 +5,6 @@
 
 #include <Wire.h>
 #include "rgb_lcd.h"
-#include<iostream>
 
 rgb_lcd lcd;
 const int R = 0;
@@ -20,17 +19,18 @@ void setup()
   lcd.setRGB( 10, 0, 0 );
   lcd.print("hello, world!");
   //2 second delay
-  delay(2000)
+  delay(2000);
 // num multiplier for seconds of delay
-  int n = 120
+  
   
 }
  
 void loop()
 {
-  delay(n * 1000)
+  int n = 120;
+  delay(n * 1000);
 
-  sound_lv = listen();
+  int sound_lv = listen();
   if (sound_lv <= 150)
   {
     lcd.setRGB( 0, 100, 0 );
@@ -51,7 +51,7 @@ void loop()
 
 int listen()
 {
-  int *arr = new int(20);
+  int arr[20];
   for (int i = 0; i < 20; i++)
   {
     int soundValue = 0; //create variable to store many different readings
@@ -59,16 +59,17 @@ int listen()
     { soundValue += analogRead(sound_sensor);  } //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
-    soundValue >> arr[i];
+    arr[i] = soundValue;
     //Serial.println(soundValue); //print the value of sound sensor
   }
   //gets average
+  int arrL = SizeOf(arr)
   int sum = 0;
-  for (i = 0; i < arr.length; i++)
+  for (int i = 0; i < arrL; i++)
   {
-    sum = sum + arr[i]
+    sum = sum + arr[i];
   }
-  int average = sum / arr.length
+  int average = sum / arrL;
   return average;
 }
 
