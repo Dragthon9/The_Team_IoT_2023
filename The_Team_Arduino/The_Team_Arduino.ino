@@ -22,7 +22,6 @@ void setup()
   delay(2000);
 // num multiplier for seconds of delay
   
-  
 }
  
 void loop()
@@ -63,21 +62,17 @@ int listen()
     //Serial.println(soundValue); //print the value of sound sensor
   }
   //gets average
-  int arrL = SizeOf(arr)
+  
   int sum = 0;
-  for (int i = 0; i < arrL; i++)
+  for (int i = 0; i < 20; i++)
   {
     sum = sum + arr[i];
   }
-  int average = sum / arrL;
-  return average;
+  int average = sum / 20;
+  if (average == 0)
+  {
+    average = 1;
+  }
+  //return average;
 }
-
-
-
-
-
-
-
-
 
