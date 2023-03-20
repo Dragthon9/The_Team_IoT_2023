@@ -29,27 +29,6 @@ void loop()
   int n = 120;
   delay(n * 1000);
 
-  int sound_lv = listen();
-  if (sound_lv <= 150)
-  {
-    lcd.setRGB( 0, 100, 0 );
-    lcd.print("Current noise lv: quiet");
-  }
-  else if (sound_lv > 150 && sound_lv <= 250)
-  {
-    lcd.setRGB( 100, 100, 0 );
-    lcd.print("Current noise lv: noisy");
-  }
-  else if (sound_lv > 250)
-  {
-    lcd.setRGB( 100, 0, 0 );
-    lcd.print("Current noise lv: loud AF");
-  }
-
-}
-
-int listen()
-{
   int arr[20];
   for (int i = 0; i < 20; i++)
   {
@@ -58,21 +37,40 @@ int listen()
     { soundValue += analogRead(sound_sensor);  } //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
-    arr[i] = soundValue;
+    arr[i] = soundValue; //stores value to array
     //Serial.println(soundValue); //print the value of sound sensor
   }
+
   //gets average
-  
   int sum = 0;
   for (int i = 0; i < 20; i++)
   {
     sum = sum + arr[i];
   }
   int average = sum / 20;
+
+  //makes sure average isn't 0
   if (average == 0)
   {
     average = 1;
   }
-  //return average;
+
+  //checks average and displayes sound lv depending on how lowd it is
+  if (average <= 150)
+  {
+    lcd.setRGB( 0, 100, 0 );
+    lcd.print("Current noise lv: quiet");
+  }
+  else if (average > 150 && average <= 250)
+  {
+    lcd.setRGB( 100, 100, 0 );
+    lcd.print("Current noise lv: noisy");
+  }
+  else if (average > 250)
+  {
+    lcd.setRGB( 100, 0, 0 );
+    lcd.print("Current noise lv: loud AF");
+  }
+
 }
 
