@@ -1,5 +1,3 @@
-
-
 //2023 Project1
 //coded by Luca Kauther-Kearney
 
@@ -11,35 +9,40 @@ const int R = 0;
 const int G = 0;
 const int B = 0;
 
-int sound_sensor = A2; //assign to pin A2
  
 void setup() 
 {
+  lcd.begin(16,2);
   Serial.begin(9600); //begin Serial Communication
-  lcd.setRGB( 10, 0, 0 );
+  lcd.setRGB( 0, 10, 0 );
   lcd.print("hello, world!");
   //2 second delay
   delay(2000);
 // num multiplier for seconds of delay
-  
 }
  
 void loop()
 {
-  int n = 120;
-  delay(n * 1000);
-
+  for (int i = 0; i < 20; i++)
+  {
+    lcd.print("Time since last reading: ",i);
+    delay(1000)
+  }
+  
+  lcd.print("reading");
   int arr[20];
   for (int i = 0; i < 20; i++)
   {
     int soundValue = 0; //create variable to store many different readings
     for (int x = 0; x < 500; i++) //create a for loop to read every half second
-    { soundValue += analogRead(sound_sensor);  } //read the sound sensor
+    { soundValue += analogRead(A2);  } //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
     arr[i] = soundValue; //stores value to array
     //Serial.println(soundValue); //print the value of sound sensor
   }
+
+  lcd.print("Getting average:");
 
   //gets average
   int sum = 0;
