@@ -25,6 +25,7 @@ void setup()
  
 void loop()
 {
+  // i<n sets how long till next reading
   for (int i = 0; i < 10; i++)
   {
     lcd.setCursor(0, 0);
@@ -39,16 +40,18 @@ void loop()
   lcd.setCursor(0, 0);
   lcd.print("Begining reading:");
   delay(1000);
-  int arr[20];
+
+
+  int arr[80];
   
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 80; i++)
   {
     int soundValue = 0;//create variable to store many different readings
     soundValue += analogRead(A2); //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
     arr[i] = soundValue; //stores value to array
-    delay(500);
+    delay(125);
   }
 
   lcd.clear();
@@ -57,11 +60,11 @@ void loop()
 
   //gets average
   int sum = 0;
-  for (int i = 0; i < 20; i++)
+  for (int i = 0; i < 80; i++)
   {
     sum = sum + arr[i];
   }
-  int average = sum / 20;
+  int average = sum / 80;
 
   //makes sure average isn't 0
   if (average == 0)
@@ -95,7 +98,7 @@ void loop()
     lcd.setCursor(0, 0);
     lcd.print("Current noise lv:");
     lcd.setCursor(0, 1);
-    lcd.print("loud AF");
+    lcd.print("loud");
   }
   delay(5000);
 
