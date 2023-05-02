@@ -9,11 +9,38 @@ const int R = 0;
 const int G = 0;
 const int B = 0;
 
- 
+ #define BLYNK_PRINT Serial
+
+/* Fill in information from Blynk Device Info here */
+#define BLYNK_TEMPLATE_ID           "TMPxxxxxx"
+#define BLYNK_TEMPLATE_NAME         "Device"
+#define BLYNK_AUTH_TOKEN            "YourAuthToken"
+
+
+#include <SPI.h>
+#include <Ethernet.h>
+#include <BlynkSimpleEthernet.h>
+
+BlynkTimer timer;
+
+// This function sends Arduino's up time every second to Virtual Pin (5).
+void myTimerEvent()
+{
+  // You can send any value at any time.
+  // Please don't send more that 10 values per second.
+  Blynk.virtualWrite(V5, millis() / 1000);
+}
 void setup() 
 {
+// Debug console
+  Serial.begin(9600);
+
+  Blynk.begin(BLYNK_AUTH_TOKEN);
+
+  // Setup a function to be called every second
+  timer.setInterval(1000L, myTimerEvent);
+
   lcd.begin(16,2);
-  Serial.begin(9600); //begin Serial Communication
   lcd.setRGB( 0, 10, 0 );
   lcd.noAutoscroll();
   lcd.print("hello, world!");
@@ -25,6 +52,9 @@ void setup()
  
 void loop()
 {
+  Blynk.run();
+  timer.run(); // Initiates BlynkTimer
+
   // i<n sets how long till next reading
   for (int i = 0; i < 10; i++)
   {
@@ -47,7 +77,7 @@ void loop()
   for (int i = 0; i < 80; i++)
   {
     int soundValue = 0;//create variable to store many different readings
-    soundValue += analogRead(A2); //read the sound sensor
+    soundValue = analogRead(A2); //read the sound sensor
   
     soundValue >>= 5; //bitshift operation 
     arr[i] = soundValue; //stores value to array
@@ -57,6 +87,7 @@ void loop()
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Getting average:");
+  delay(1000);
 
   //gets average
   int sum = 0;
@@ -73,32 +104,35 @@ void loop()
   }
 
   //checks average and displayes sound lv depending on how lowd it is
-  if (average <= 150)
+  if (average <= 50)
   {
     lcd.setRGB( 0, 100, 0 );
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Current noise lv: quiet");
     lcd.setCursor(0, 1);
-    lcd.print("quiet");
+    lcd.print("quiet-Av:", average);
+    myTimerEvent(average);
   }
-  else if (average > 150 && average <= 250)
+  else if (average > 50 && average <= 150)
   {
     lcd.setRGB( 100, 100, 0 );
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Current noise lv:");
     lcd.setCursor(0, 1);
-    lcd.print("noisy");
+    lcd.print("noisy-Av:", average);
+    myTimerEvent(average);
   }
-  else if (average > 250)
+  else if (average > 150)
   {
     lcd.setRGB( 100, 0, 0 );
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Current noise lv:");
     lcd.setCursor(0, 1);
-    lcd.print("loud");
+    lcd.print("loud-Av:", average);
+    myTimerEvent(average);
   }
   delay(5000);
 
